@@ -12,16 +12,14 @@ class GeneralSpider(CrawlSpider):
     allowed_domains = []
 
     def __init__(self, rule):
-        print(rule)
-        # auth = oss2.Auth('LTAIEGPz3hY8pCTU', '8V0l4V8F2SZP5RasV0kw6ljusPlNSD')
-        # endpoint = 'http://oss-cn-hangzhou-internal.aliyuncs.com'  # 假设Bucket处于杭州区域
-        # self.bucket = oss2.Bucket(auth, endpoint, 'syzb01')
-        self.name = rule.name
+        # print(rule)
         self.rule_id = rule.id
+        self.name = rule.name
+        
         # if len(rule.start_urls) == 0:
         #     raise SpiderRuleStartUrlsError()
-        self.start_urls = rule.start_urls
-        self.allowed_domains = rule.allowed_domains
+        self.start_urls = [x for x in rule.start_urls.split(',') if x]
+        self.allowed_domains = [x for x in rule.allowed_domains.split(',') if x]
         self.encoding = rule.encoding
 
         # rule_list = []
@@ -33,7 +31,6 @@ class GeneralSpider(CrawlSpider):
         #     callback='parse_item'))
 
         super(GeneralSpider, self).__init__()
-        pass
 
     rules = (
         Rule(LinkExtractor(allow='/20\d{2}-[0,1]\d/ART[\d\-_]*.html',

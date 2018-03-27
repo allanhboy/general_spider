@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 from scrapy.settings import Settings
-from db import DBSession, Config
 
 
-def get_scrapy_settings():
+def get_scrapy_settings(config):
 
     settings = Settings()
 
@@ -47,9 +46,6 @@ def get_scrapy_settings():
         'pipelines.OSSPipeline': 300,
     })
 
-    session = DBSession()
-    config = session.query(Config).filter(Config.id == 1).one()
-
     # 设置OSS
     settings.set('OSS_ENABLE', config.oss_enabled)
     settings.set('OSS_KEY_ID', config.oss_key_id)
@@ -64,7 +60,5 @@ def get_scrapy_settings():
     settings.set('DELTA_FETCH_REDIS_PORT', config.delta_fetch_redis_port)
     settings.set('DELTA_FETCH_REDIS_DB', config.delta_fetch_redis_db)
     settings.set('DELTA_FETCH_REDIS_PASSWORD', config.delta_fetch_redis_password)
-
-    session.close()
 
     return settings

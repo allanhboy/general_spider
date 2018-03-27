@@ -28,3 +28,15 @@ class Config(Base):
     oss_endpoint = Column(String)
     oss_key_id = Column(String)
     oss_key_secret = Column(String)
+
+
+class SpiderRule(Base):
+    __tablename__ = 'spider_rule'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    start_urls = Column(String)
+    allowed_domains = Column(String)
+    enable = Column(Boolean)
+    cron = Column(String)
+    encoding = Column(String)
