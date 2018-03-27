@@ -1,0 +1,5 @@
+scrapy
+redis
+APScheduler
+oss2
+urllib
