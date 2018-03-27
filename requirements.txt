@@ -3,3 +3,5 @@ redis
 APScheduler
 oss2
 urllib3
+pymysql
+sqlalchemy

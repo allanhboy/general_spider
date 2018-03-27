@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from scrapy.settings import Settings
+from db import DBSession, Config
 
 
 def get_scrapy_settings():
@@ -46,19 +47,24 @@ def get_scrapy_settings():
         'pipelines.OSSPipeline': 300,
     })
 
+    session = DBSession()
+    config = session.query(Config).filter(Config.id == 1).one()
 
     # 设置OSS
-    settings.set('OSS_KEY_ID', 'LTAIEGPz3hY8pCTU')
-    settings.set('OSS_KEY_SECRET', '8V0l4V8F2SZP5RasV0kw6ljusPlNSD')
-    settings.set('OSS_ENDPOINT', 'http://oss-cn-hangzhou.aliyuncs.com')
+    settings.set('OSS_ENABLE', config.oss_enabled)
+    settings.set('OSS_KEY_ID', config.oss_key_id)
+    settings.set('OSS_KEY_SECRET', config.oss_key_secret)
+    settings.set('OSS_ENDPOINT', config.oss_endpoint)
     # settings.set('OSS_ENDPOINT', 'http://oss-cn-hangzhou-internal.aliyuncs.com')
-    settings.set('OSS_BUCKET_NAME', 'syzb01')
+    settings.set('OSS_BUCKET_NAME', config.oss_bucket_name)
 
     # 设置DeltaFetch.redis
-    settings.set('DELTA_FETCH_ENABLED', True)
-    settings.set('DELTA_FETCH_REDIS_HOST', 'localhost')
-    settings.set('DELTA_FETCH_REDIS_PORT', 6379)
-    settings.set('DELTA_FETCH_REDIS_DB', 10)
-    # settings.set('DELTA_FETCH_REDIS_PASSWORD', '')
+    settings.set('DELTA_FETCH_ENABLED', config.delta_fetch_enabled)
+    settings.set('DELTA_FETCH_REDIS_HOST', config.delta_fetch_redis_host)
+    settings.set('DELTA_FETCH_REDIS_PORT', config.delta_fetch_redis_port)
+    settings.set('DELTA_FETCH_REDIS_DB', config.delta_fetch_redis_db)
+    settings.set('DELTA_FETCH_REDIS_PASSWORD', config.delta_fetch_redis_password)
+
+    session.close()
 
     return settings
