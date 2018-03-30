@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, String, Integer, Boolean
+from sqlalchemy import create_engine, Column, String, Integer, Boolean, BigInteger, DateTime
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -34,9 +34,22 @@ class SpiderRule(Base):
     __tablename__ = 'spider_rule'
 
     id = Column(Integer, primary_key=True)
+    spider_clsass = Column(String)
     name = Column(String)
     start_urls = Column(String)
     allowed_domains = Column(String)
     enable = Column(Boolean)
     cron = Column(String)
     encoding = Column(String)
+    next_page = Column(String)
+    allow_url = Column(String)
+
+class SpiderTask(Base):
+    __tablename__ = 'spider_task'
+
+    id = Column(BigInteger, primary_key= True)
+    spider_name = Column(String)
+    spider_rule_id = Column(Integer)
+    start_time = Column(DateTime)
+    end_time = Column(DateTime)
+    status = Column(String)

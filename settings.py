@@ -61,4 +61,8 @@ def get_scrapy_settings(config):
     settings.set('DELTA_FETCH_REDIS_DB', config.delta_fetch_redis_db)
     settings.set('DELTA_FETCH_REDIS_PASSWORD', config.delta_fetch_redis_password)
 
+    # scrapy_jsonrpc
+    # settings.set('EXTENSIONS', {'scrapy_jsonrpc.webservice.WebService': 500,})
+    # settings.set('JSONRPC_ENABLED', False)
+
     return settings
