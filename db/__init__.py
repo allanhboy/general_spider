@@ -6,7 +6,7 @@ from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 
 # 初始化数据库连接:
-engine = create_engine('mysql+pymysql://root:djejeUJ3qj^su22@db:3306/syzb_spider_db?charset=utf8')
+engine = create_engine('mysql+pymysql://root:djejeUJ3qj^su22@10.253.0.4:3306/syzb_spider_db?charset=utf8')
 # 创建DBSession类型:
 DBSession = sessionmaker(bind=engine)
 
