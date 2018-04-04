@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 import oss2
 import logging
+from scrapy.exceptions import NotConfigured
+
+from db.article import Article
+from db import DBSession
 
 logger = logging.getLogger(__name__)
 
@@ -13,6 +17,8 @@ class OSSPipeline(object):
 
     @classmethod
     def from_crawler(cls, crawler):
+        if not crawler.settings.getbool('OSS_ENABLE'):
+            raise NotConfigured
         return cls(
             key_id=crawler.settings.get('OSS_KEY_ID'),
             key_secret=crawler.settings.get('OSS_KEY_SECRET'),
@@ -34,4 +40,23 @@ class OSSPipeline(object):
                 html = item['html']
                 logger.info("store oss: %s" % filename)
                 self.bucket.put_object(filename, html)
+        return item
+
+
+from db import DBSession
+class MysqlPipeline(object):
+    def open_spider(self, spider):
+        self.session = DBSession()
+
+    def close_spider(self, spider):
+        self.session.close()
+    
+    def process_item(self, item, spider):
+        a = Article(title=item["title"],
+                    url=item["url"],
+                    body=item["body"],
+                    publish_time=item["publish_time"],
+                    source_site=item["source_site"])
+        self.session.add(a)
+        self.session.commit()
         return item

@@ -43,7 +43,8 @@ def get_scrapy_settings(config):
     # settings.set('STATS_CLASS', 'redis_statscol.RedisStatsCollector')
 
     settings.set('ITEM_PIPELINES', {
-        'pipelines.OSSPipeline': 300,
+        'pipelines.OSSPipeline': 800,
+        'pipelines.MysqlPipeline': 801,
     })
 
     # 设置OSS

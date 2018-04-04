@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from sqlalchemy import create_engine, Column, String, Integer, Boolean, BigInteger, DateTime
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
@@ -5,7 +6,7 @@ from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 
 # 初始化数据库连接:
-engine = create_engine('mysql+pymysql://root:djejeUJ3qj^su22@101.37.179.99:3306/syzb_spider_db')
+engine = create_engine('mysql+pymysql://root:djejeUJ3qj^su22@db:3306/syzb_spider_db?charset=utf8')
 # 创建DBSession类型:
 DBSession = sessionmaker(bind=engine)
 
@@ -43,6 +44,10 @@ class SpiderRule(Base):
     encoding = Column(String)
     next_page = Column(String)
     allow_url = Column(String)
+    title_xpath = Column(String)
+    body_xpath = Column(String)
+    publish_time_xpath = Column(String)
+    source_site_xpath = Column(String)
 
 class SpiderTask(Base):
     __tablename__ = 'spider_task'
