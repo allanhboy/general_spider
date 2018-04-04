@@ -7,4 +7,5 @@ ADD . /app
 
 RUN pip3 install -r requirements.txt
 
-CMD ['/bin/ls', '-l']
+ENTRYPOINT ["python"]
+CMD ["run.py"]
