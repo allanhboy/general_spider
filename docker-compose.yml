@@ -1,0 +1,12 @@
+general-spider:
+  image: 'registry-vpc.cn-hangzhou.aliyuncs.com/syzb/general_spider:latest'
+  container_name: general-spider
+  restart: always
+  environment:
+    - LANG=C.UTF-8
+    - GPG_KEY=0D96DF4D4110E5C43FBFB17F2D347EA6AA65421D
+  ports:
+    - '8080:80'
+  labels:
+    aliyun.scale: '1'
+    aliyun.routing.port_80: spider
