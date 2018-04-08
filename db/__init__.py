@@ -2,11 +2,17 @@
 from sqlalchemy import create_engine, Column, String, Integer, Boolean, BigInteger, DateTime
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-
+import os
 Base = declarative_base()
 
 # 初始化数据库连接:
-engine = create_engine('mysql+pymysql://root:djejeUJ3qj^su22@10.253.0.4:3306/syzb_spider_db?charset=utf8')
+env_dist = os.environ
+host = env_dist.get('GENERAL_SPIDER_MYSQL_HOST', "localhost")
+username = env_dist.get('GENERAL_SPIDER_MYSQL_USERNAME', "root")
+password = env_dist.get('GENERAL_SPIDER_MYSQL_PASSWORD', "addie5kaiK3")
+db = env_dist.get('GENERAL_SPIDER_MYSQL_DB', "syzb_spider_db")
+engine = create_engine('mysql+pymysql://%s:%s@%s:3306/%s?charset=utf8'%(username,password,host, db))
+# engine = create_engine('mysql+pymysql://root:addie5kaiK3@localhost:3306/syzb_spider_db?charset=utf8')
 # 创建DBSession类型:
 DBSession = sessionmaker(bind=engine)
 
