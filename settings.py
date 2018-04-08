@@ -34,10 +34,10 @@ def get_scrapy_settings(config):
     settings.set("ROBOTSTXT_OBEY", False)
 
     # Enables scheduling storing requests queue in redis.
-    # settings.set("SCHEDULER", "scrapy_redis.scheduler.Scheduler")
+    settings.set("SCHEDULER", "scrapy_redis.scheduler.Scheduler")
 
     # Ensure all spiders share same duplicates filter through redis.
-    # settings.set("DUPEFILTER_CLASS", "scrapy_redis.dupefilter.RFPDupeFilter")
+    settings.set("DUPEFILTER_CLASS", "scrapy_redis.dupefilter.RFPDupeFilter")
 
     # 设置统计数据到redis
     # settings.set('STATS_CLASS', 'redis_statscol.RedisStatsCollector')
@@ -46,6 +46,8 @@ def get_scrapy_settings(config):
         'pipelines.OSSPipeline': 800,
         'pipelines.MysqlPipeline': 801,
     })
+
+    settings.set('LOG_LEVEL', 'INFO')
 
     # 设置OSS
     settings.set('OSS_ENABLE', config.oss_enabled)
