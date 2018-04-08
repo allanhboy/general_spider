@@ -39,6 +39,11 @@ def get_scrapy_settings(config):
     # Ensure all spiders share same duplicates filter through redis.
     settings.set("DUPEFILTER_CLASS", "scrapy_redis.dupefilter.RFPDupeFilter")
 
+    import os
+    env_dist = os.environ
+    redis_url = env_dist.get("GENERAL_SPIDER_REDIS_URL")
+    settings.set("REDIS_URL", redis_url)
+
     # 设置统计数据到redis
     # settings.set('STATS_CLASS', 'redis_statscol.RedisStatsCollector')
 
