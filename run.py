@@ -46,7 +46,7 @@ session.close()
 
 
 class Simple(resource.Resource):
-    count = 0
+    # count = 0
     def __init__(self, scheduler):
         self.scheduler = scheduler
         # self.jobs = works
@@ -55,17 +55,17 @@ class Simple(resource.Resource):
     
     isLeaf = True
     def render_GET(self, request):
-        self.count +=1
+        # self.count +=1
         
         sessionweb = DBSession()
         spiderRule = sessionweb.query(SpiderRule).filter(SpiderRule.enable and SpiderRule.cron == None).one()
-        spiderRule.name = '%s-%s'%(spiderRule.name,self.count)
-        print('我来了%s次!!!'%spiderRule.name)
+        # spiderRule.name = '%s-%s'%(spiderRule.name,self.count)
+        # print('我来了%s次!!!'%spiderRule.name)
         self.scheduler.add_job(crawl, 'date', args=[spiderRule],  name=spiderRule.name, id='%s'%spiderRule.id, replace_existing=True)
         
         sessionweb.close()
         request.setHeader("Content-Type", "text/html; charset=utf-8")
-        return ("<html>Hello, world!%s</html>"%self.count).encode('utf-8')
+        return ("<html>Hello, world!</html>").encode('utf-8')
     
     def render_POST(self, request):
         pass
