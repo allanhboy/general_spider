@@ -62,17 +62,37 @@ class MysqlPipeline(object):
         self.session.commit()
         return item
 
-
+from bs4 import BeautifulSoup
 class HtmlCleaningPipeline(object):
     def process_item(self, item, spider):
         if item['body']:
-            from bs4 import BeautifulSoup
+            
             soup = BeautifulSoup(item['body'])
             text = ''
             for p in soup.find_all("p"):
-                p_text = p.get_text(strip=True)
-                if p_text:
-                    text+=p_text
-                item['text'] = text
+                p_text = p.get_text(strip=True).replace("：", ":").replace(
+                    "，", ",").replace("。", ".").replace("（", "(").replace("）", ")")
+                if p_text.find('来源:') == 0:
+                    pass
+                elif p_text.find('作者:') == 0:
+                    pass
+                elif p_text.find('(注:') == 0:
+                    pass
+                elif p_text.find('本文出品:') == 0:
+                    pass
+                elif p_text.find('转载声明:') == 0:
+                    pass
+                elif p_text.find('风险提示:') == 0:
+                    pass
+                elif p_text.find('声明:') == 0:
+                    pass
+                elif p_text.find('(本文为新三板在线原创稿件') == 0:
+                    pass
+                else:
+                    if text.strip():
+                        text += "\n" + p_text
+                    else:
+                        text = p_text
+            item['text'] = text
         return item
         
