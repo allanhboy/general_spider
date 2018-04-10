@@ -88,6 +88,8 @@ class HtmlCleaningPipeline(object):
                     pass
                 elif p_text.find('(本文为新三板在线原创稿件') == 0:
                     pass
+                elif p_text.find('数据来源:') == 0:
+                    pass
                 else:
                     if text.strip():
                         text += "\n" + p_text
