@@ -9,6 +9,7 @@ import os
 from scrapy import signals
 from db import DBSession, SpiderTask
 from datetime import datetime
+from spiders import Article
 
 
 class GeneralSpider(CrawlSpider):
@@ -111,9 +112,3 @@ class GeneralSpider(CrawlSpider):
         return article
 
 
-class Article(scrapy.Item):
-    title = scrapy.Field()
-    url = scrapy.Field()
-    body = scrapy.Field()
-    publish_time = scrapy.Field()
-    source_site = scrapy.Field()

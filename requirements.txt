@@ -6,3 +6,5 @@ oss2
 urllib3
 pymysql
 sqlalchemy
+beautifulsoup4
+lxml

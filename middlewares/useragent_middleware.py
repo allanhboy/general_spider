@@ -16,7 +16,7 @@ class UserAgent(UserAgentMiddleware):
     def process_request(self, request, spider):
         ua = random.choice(self.user_agent_list)
         if ua:
-            logger.info('Current UserAgent: %s' % ua)
+            logger.debug('Current UserAgent: %s' % ua)
             request.headers.setdefault('User-Agent', ua)
 
     user_agent_list = [

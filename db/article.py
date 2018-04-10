@@ -14,3 +14,4 @@ class Article(Base):
     body = Column(String)
     publish_time = Column(String)
     source_site = Column(String)
+    text = Column(String)

@@ -49,7 +49,8 @@ def get_scrapy_settings(config):
 
     settings.set('ITEM_PIPELINES', {
         'pipelines.OSSPipeline': 800,
-        'pipelines.MysqlPipeline': 801,
+        'pipelines.HtmlCleaningPipeline':801,
+        'pipelines.MysqlPipeline': 802,
     })
 
     settings.set('LOG_LEVEL', 'INFO')

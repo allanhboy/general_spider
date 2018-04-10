@@ -55,8 +55,24 @@ class MysqlPipeline(object):
         a = Article(title=item["title"],
                     url=item["url"],
                     body=item["body"],
+                    text=item["text"],
                     publish_time=item["publish_time"],
                     source_site=item["source_site"])
         self.session.add(a)
         self.session.commit()
         return item
+
+
+class HtmlCleaningPipeline(object):
+    def process_item(self, item, spider):
+        if item['body']:
+            from bs4 import BeautifulSoup
+            soup = BeautifulSoup(item['body'])
+            text = ''
+            for p in soup.find_all("p"):
+                p_text = p.get_text(strip=True)
+                if p_text:
+                    text+=p_text
+                item['text'] = text
+        return item
+        
