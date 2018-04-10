@@ -20,7 +20,7 @@ def get_scrapy_settings(config):
 
     settings.set("SPIDER_MIDDLEWARES", {
         'scrapy.spidermiddlewares.offsite.OffsiteMiddleware': 100,
-        'middlewares.deltafetch_middleware.DeltaFetch': 101,
+        'middlewares.deltafetch_middleware.DeltaFetch': 803,
     })
 
     # 设置爬取间隔
