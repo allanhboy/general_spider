@@ -48,6 +48,7 @@ def get_scrapy_settings(config):
     # settings.set('STATS_CLASS', 'redis_statscol.RedisStatsCollector')
 
     settings.set('ITEM_PIPELINES', {
+        'pipelines.DuplicatesPipeline':799,
         'pipelines.OSSPipeline': 800,
         'pipelines.HtmlCleaningPipeline':801,
         'pipelines.MysqlPipeline': 802,

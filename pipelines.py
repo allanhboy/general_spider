@@ -8,6 +8,7 @@ from db import DBSession
 
 logger = logging.getLogger(__name__)
 
+
 class OSSPipeline(object):
     def __init__(self, key_id, key_secret, endpoint, bucket_name):
         self.key_id = key_id
@@ -42,15 +43,40 @@ class OSSPipeline(object):
                 self.bucket.put_object(filename, html)
         return item
 
+from scrapy.exceptions import DropItem
+class DuplicatesPipeline(object):
+    def __init__(self):
+        self.urls_seen = set()
+    
+    def open_spider(self, spider):
+            self.session = DBSession()
+
+    def close_spider(self, spider):
+        self.session.close()
+
+    def process_item(self, item, spider):
+        if item['url'] in self.urls_seen:
+            raise DropItem("Duplicate item found: %s" % item)
+        else:
+            self.urls_seen.add(item['url'])
+            count = self.session.query(Article).filter(Article.url ==item['url']).count()
+            if count == 0 :
+                return item
+            else:
+                raise DropItem("Duplicate item found: %s" % item)
+            
+
 
 from db import DBSession
+
+
 class MysqlPipeline(object):
     def open_spider(self, spider):
         self.session = DBSession()
 
     def close_spider(self, spider):
         self.session.close()
-    
+
     def process_item(self, item, spider):
         a = Article(title=item["title"],
                     url=item["url"],
@@ -62,16 +88,19 @@ class MysqlPipeline(object):
         self.session.commit()
         return item
 
+
 from bs4 import BeautifulSoup
+
+
 class HtmlCleaningPipeline(object):
     def process_item(self, item, spider):
         if item['body']:
-            
+
             soup = BeautifulSoup(item['body'])
             text = ''
             for p in soup.find_all("p"):
                 p_text = p.get_text(strip=True).replace("：", ":").replace(
-                    "，", ",").replace("。", ".").replace("（", "(").replace("）", ")")
+                    "，", ",").replace("。", ".").replace("（", "(").replace("）", ")").replace("％", "%")
                 if p_text.find('来源:') == 0:
                     pass
                 elif p_text.find('作者:') == 0:
@@ -97,4 +126,3 @@ class HtmlCleaningPipeline(object):
                         text = p_text
             item['text'] = text
         return item
-        
