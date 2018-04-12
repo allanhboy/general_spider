@@ -15,6 +15,7 @@ def get_scrapy_settings(config):
     # 注册自定义中间件，激活切换UA的组件和切换代理IP的组件
     settings.set("DOWNLOADER_MIDDLEWARES", {
         'middlewares.useragent_middleware.UserAgent': 1,
+        'pipelines.ProxyIpMiddleware': 90
         'scrapy.downloadermiddleware.useragent.UserAgentMiddleware': None,
     })
 
