@@ -126,3 +126,18 @@ class HtmlCleaningPipeline(object):
                         text = p_text
             item['text'] = text
         return item
+
+
+import urllib3
+class ProxyIpMiddleware(object):
+    def __init__(self, ip=''):
+        self.ip = ip
+    
+    def process_request(self, request, spider):
+        
+        http = urllib3.PoolManager()
+        r = http.request('GET', 'http://proxy-pool.c2fd1643d9abe4d9fb2887ea58a7a3202.cn-hangzhou.alicontainer.com/get/')
+        ip = r.data.decode('utf-8').strip()
+        if ip:
+            logger.debug('Current Proxy Ip: %s' % ip)
+            request.meta["proxy"] = "http://"+ip
