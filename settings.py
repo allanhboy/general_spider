@@ -25,7 +25,7 @@ def get_scrapy_settings(config):
     })
 
     # 设置爬取间隔
-    settings.set("DOWNLOAD_DELAY", 5)
+    settings.set("DOWNLOAD_DELAY", 1)
 
     # 禁用cookies
     settings.set("COOKIES_ENABLED", True)
