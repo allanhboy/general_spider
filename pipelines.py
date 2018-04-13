@@ -43,13 +43,16 @@ class OSSPipeline(object):
                 self.bucket.put_object(filename, html)
         return item
 
+
 from scrapy.exceptions import DropItem
+
+
 class DuplicatesPipeline(object):
     def __init__(self):
         self.urls_seen = set()
-    
+
     def open_spider(self, spider):
-            self.session = DBSession()
+        self.session = DBSession()
 
     def close_spider(self, spider):
         self.session.close()
@@ -59,12 +62,12 @@ class DuplicatesPipeline(object):
             raise DropItem("Duplicate item found: %s" % item)
         else:
             self.urls_seen.add(item['url'])
-            count = self.session.query(Article).filter(Article.url ==item['url']).count()
-            if count == 0 :
+            count = self.session.query(Article).filter(
+                Article.url == item['url']).count()
+            if count == 0:
                 return item
             else:
                 raise DropItem("Duplicate item found: %s" % item)
-            
 
 
 from db import DBSession
@@ -129,15 +132,18 @@ class HtmlCleaningPipeline(object):
 
 
 import urllib3
+
+
 class ProxyIpMiddleware(object):
     def __init__(self, ip=''):
         self.ip = ip
-    
+
     def process_request(self, request, spider):
-        
         http = urllib3.PoolManager()
-        r = http.request('GET', 'http://proxy-pool.c2fd1643d9abe4d9fb2887ea58a7a3202.cn-hangzhou.alicontainer.com/get/')
+        r = http.request(
+            'GET', 'http://proxy-pool.c2fd1643d9abe4d9fb2887ea58a7a3202.cn-hangzhou.alicontainer.com/get/')
         ip = r.data.decode('utf-8').strip()
         if ip:
             logger.debug('Current Proxy Ip: %s' % ip)
             request.meta["proxy"] = "http://"+ip
+        r.close()
